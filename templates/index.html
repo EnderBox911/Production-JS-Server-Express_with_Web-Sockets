@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>replit</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+</head>
+
+<body>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      const socket = io();
+  
+      socket.on('connect', () => {
+        // When connection is established
+        console.log('Connection established');
+  
+        // Send a message to the server
+        socket.send('Hello, server!');
+      });
+  
+      // Listen for messages from the server
+      socket.on('message', (message) => {
+        $('#messages').append($('<p>').text(message));
+        console.log('Server says:', message);
+      });
+  
+      // Listen for custom event 'EmitKeyWord' from the server
+      socket.on('EmitKeyWord', (data) => {
+        console.log('Received custom event:', data);
+      });
+  
+      // Listen for disconnect event
+      socket.on('disconnect', () => {
+        console.log('Connection terminated');
+      });
+
+      $('#push_data').on('click', function () {
+        console.log('PUSHED');
+        socket.send("Button has been pushed!");
+      });
+      
+    });
+  </script>
+
+  Hello world
+
+  <div id="messages" class = "scroll">
+    Messages received:
+  </div>
+
+  <button type="button" id="push_data" theme='dark'>Push</button>
+
+
+</body>
+
+</html>
