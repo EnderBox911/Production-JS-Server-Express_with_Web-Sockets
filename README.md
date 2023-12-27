@@ -9,13 +9,14 @@ A Template for a basic web server using Node.js and the Express module.
 2. [Dependencies](#dependencies)
 3. [Configuration](#configuration)
 4. [Socket Events](#socket-events)
-   - [connect](#connect)
-   - [message](#message)
-   - [disconnect](#disconnect)
+   - [connect](#connect-event)
+   - [message](#message-event)
+   - [disconnect](#disconnect-event)
 5. [HTTP Routes](#http-routes)
-6. [WebSocket Server](#websocket-server)
-7. [Usage](#usage)
-8. [License](#license)
+   - [HTML and JavaScript in the Client](#html-and-javascript-in-the-client)
+7. [WebSocket Server](#websocket-server)
+8. [Usage](#usage)
+9. [License](#license)
 
 ## Introduction
 
