@@ -1,5 +1,5 @@
 # Production-JS-Server-Express_with_Web-Sockets
-A Template for a basic web server using Node.js and the Express module.
+This documentation provides an overview of a Node.js server using Express and Socket.io to establish a WebSocket connection. The server allows bidirectional communication between clients and the server over a WebSocket connection. The code snippet demonstrates the server setup, configuration, and handling of WebSocket events.
 
 # Documentation Overview
 
@@ -17,10 +17,6 @@ A Template for a basic web server using Node.js and the Express module.
 7. [WebSocket Server](#websocket-server)
 8. [Usage](#usage)
 9. [License](#license)
-
-## Introduction
-
-This documentation provides an overview of a Node.js server using Express and Socket.io to establish a WebSocket connection. The server allows bidirectional communication between clients and the server over a WebSocket connection. The code snippet demonstrates the server setup, configuration, and handling of WebSocket events.
 
 ## Dependencies
 
