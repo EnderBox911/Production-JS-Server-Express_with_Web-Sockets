@@ -39,7 +39,9 @@ npm install cors
 
 The server is configured to run on a specified port (`PORT`). It utilizes the `cors` middleware to allow cross-origin requests only from a specific origin.
 
+Server:
 ```javascript
+// CONFIGS
 const PORT = process.env.PORT || 9999;
 
 app.use(cors({
@@ -52,6 +54,17 @@ app.use(cors({
 
 ### `connect` Event
 
+Server:
+```javascript
+io.on('connect', (socket) => {
+   // Routing code
+
+   // 'Opens' the websocket to allow communication
+   server.listen(PORT, () => {
+     console.log('Server is running on port ' + PORT);
+});
+```
+Client:
 ```javascript
 socket.on('connect', () => {
   // When connection is established
@@ -67,7 +80,17 @@ socket.on('connect', () => {
 - The client sends a message to the server using `socket.send('Hello, server!')`.
 
 ### `message` Event
+Server:
+```javascript
+socket.on('message', (message) => {
+    // Print out the data sent by the website
+    console.log('\x1b[31mDATA : ' + message + '\x1b[0m');
 
+    // Send back data to the website
+    socket.send('Data received from web');
+  });
+```
+Client:
 ```javascript
 socket.on('message', (message) => {
   $('#messages').append($('<p>').text(message));
@@ -79,7 +102,12 @@ socket.on('message', (message) => {
 - The client appends the received message to the HTML element with the ID "messages" and logs the message to the console.
 
 ### `EmitKeyWord` Event
-
+Server:
+```javascript
+// Emit uses the first parameter as the .on('XXXX') and the data sent is the second parameter
+socket.emit('EmitKeyWord', 'Emit MWAHAHAH');
+```
+Client:
 ```javascript
 socket.on('EmitKeyWord', (data) => {
   console.log('Received custom event:', data);
@@ -90,7 +118,14 @@ socket.on('EmitKeyWord', (data) => {
 - The client listens for this event and logs the received data to the console.
 
 ### `disconnect` Event
-
+Server:
+```javascript
+socket.on('disconnect', () => {
+ // When socket is disconnected
+ console.log('\x1b[31mCONNECTION TERMINATED\x1b[0m');
+});
+```
+Client:
 ```javascript
 socket.on('disconnect', () => {
   console.log('Connection terminated');
@@ -104,6 +139,7 @@ socket.on('disconnect', () => {
 
 The server defines an HTTP route that serves an HTML file when a client accesses the root URL ("/"). The HTML file is located in the "templates" directory.
 
+Server:
 ```javascript
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/templates/index.html');
@@ -161,12 +197,19 @@ This client-side code creates a simple interface that allows interaction with th
 
 The server creates an HTTP server using Express and integrates Socket.io to establish WebSocket connections. The `io` object handles WebSocket events.
 
+Server:
 ```javascript
+const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
+const cors = require('cors');
+
+const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
 io.on('connect', (socket) => {
-  // WebSocket event handling goes here
+  // WebSocket event handling 
 });
 
 server.listen(PORT, () => {
