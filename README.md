@@ -31,6 +31,7 @@ The server relies on the following Node.js packages:
 
 ```bash
 npm install express http socket.io
+npm install cors
 ```
 
 ## Configuration
@@ -48,17 +49,55 @@ app.use(cors({
 
 ## Socket Events
 
-### connect
+### `connect` Event
 
-The `connect` event is triggered when a client establishes or re-establishes a connection to the server. It logs a message to the console indicating that the connection is established.
+```javascript
+socket.on('connect', () => {
+  // When connection is established
+  console.log('Connection established');
 
-### message
+  // Send a message to the server
+  socket.send('Hello, server!');
+});
+```
 
-The `message` event is triggered when the server receives a message from a client. It logs the received data to the console and sends a response back to the client.
+- This event is triggered when a client establishes or re-establishes a connection to the server.
+- It logs a message to the console indicating that the connection is established.
+- The client sends a message to the server using `socket.send('Hello, server!')`.
 
-### disconnect
+### `message` Event
 
-The `disconnect` event is triggered when a client disconnects from the server. It logs a message to the console indicating that the connection is terminated.
+```javascript
+socket.on('message', (message) => {
+  $('#messages').append($('<p>').text(message));
+  console.log('Server says:', message);
+});
+```
+
+- The `message` event is triggered when the server sends a message to the client using `socket.send()`.
+- The client appends the received message to the HTML element with the ID "messages" and logs the message to the console.
+
+### `EmitKeyWord` Event
+
+```javascript
+socket.on('EmitKeyWord', (data) => {
+  console.log('Received custom event:', data);
+});
+```
+
+- The `EmitKeyWord` event is triggered when the server emits a custom event named "EmitKeyWord" using `socket.emit('EmitKeyWord', 'Emit MWAHAHAH')`.
+- The client listens for this event and logs the received data to the console.
+
+### `disconnect` Event
+
+```javascript
+socket.on('disconnect', () => {
+  console.log('Connection terminated');
+});
+```
+
+- The `disconnect` event is triggered when a client disconnects from the server.
+- It logs a message to the console indicating that the connection is terminated.
 
 ## HTTP Routes
 
@@ -69,6 +108,53 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/templates/index.html');
 });
 ```
+
+### HTML and JavaScript in the Client
+
+The provided HTML file includes JavaScript code that uses Socket.io to establish a WebSocket connection and interact with the server.
+
+- **Socket.io Library Inclusion:**
+  ```html
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+  ```
+  This script tag includes the Socket.io library from a CDN, making it available for use in the client-side JavaScript.
+
+- **jQuery Library Inclusion:**
+  ```html
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+  ```
+  jQuery is included to simplify DOM manipulation and event handling in the client-side code.
+
+- **Client-Side JavaScript:**
+  ```javascript
+  $(document).ready(function() {
+    const socket = io();
+
+    // ... (Socket event listeners and client-side logic)
+
+    $('#push_data').on('click', function () {
+      console.log('PUSHED');
+      socket.send("Button has been pushed!");
+    });
+  });
+  ```
+  - The `$(document).ready()` function ensures that the JavaScript code executes when the document is fully loaded.
+  - `const socket = io();` creates a Socket.io instance and establishes a WebSocket connection to the server.
+  - Event listeners (`socket.on()`) handle various socket events, and the client can send messages to the server using `socket.send()`.
+
+- **HTML Elements:**
+  ```html
+  <div id="messages" class="scroll">
+    Messages received:
+  </div>
+
+  <button type="button" id="push_data" theme='dark'>Push</button>
+  ```
+  - A `<div>` with the ID "messages" is used to display messages received from the server.
+  - A `<button>` with the ID "push_data" triggers the sending of a message to the server when clicked.
+
+This client-side code creates a simple interface that allows interaction with the server through WebSocket communication. Messages received from the server are displayed, and the button click triggers a message to be sent to the server.
+
 
 ## WebSocket Server
 
@@ -92,10 +178,8 @@ server.listen(PORT, () => {
 To run the server, ensure that Node.js is installed, and install the required packages using npm. Then execute the following command:
 
 ```bash
-node your_server_file.js
+node index.js
 ```
-
-Replace `your_server_file.js` with the filename containing the provided code.
 
 ## License
 
