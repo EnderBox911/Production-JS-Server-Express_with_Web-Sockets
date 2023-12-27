@@ -11,6 +11,7 @@ This documentation provides an overview of a Node.js server using Express and So
 4. [Socket Events](#socket-events)
    - [connect](#connect-event)
    - [message](#message-event)
+   - [emit](#emit-event)
    - [disconnect](#disconnect-event)
 5. [HTTP Routes](#http-routes)
    - [HTML and JavaScript in the Client](#html-and-javascript-in-the-client)
@@ -97,7 +98,7 @@ socket.on('message', (message) => {
 - The `message` event is triggered when the server sends a message to the client using `socket.send()`.
 - The client appends the received message to the HTML element with the ID "messages" and logs the message to the console.
 
-### `EmitKeyWord` Event
+### `Emit` Event
 Server:
 ```javascript
 // Emit uses the first parameter as the .on('XXXX') and the data sent is the second parameter
